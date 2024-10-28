@@ -1,0 +1,128 @@
+'use server';
+
+import prisma from '@/lib/prisma';
+import { User } from '@prisma/client';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import { cookies } from 'next/headers';
+
+type LoginResponse = {
+  status: number;
+  message: string;
+};
+
+type LoginData = {
+  email: string;
+  password: string;
+};
+
+type CompareTypeCheck = {
+  loginPassword: string;
+  userPassword: string;
+};
+
+//Todo: compare passwords the stored one and the entered one
+async function comparePasswordsFn(loginPassword: string, userPassword: string) {
+  const comparePasswords = await bcrypt.compare(loginPassword, userPassword);
+
+  return comparePasswords;
+}
+
+//Todo: GeneratingToken
+function generateToken(userId: number, name: string) {
+  return jwt.sign({ userId, name }, process.env.JWT_SECRET!, {
+    expiresIn: '24h',
+  });
+}
+
+export const Login = async (data: LoginData): Promise<LoginResponse> => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        email: data.email,
+      },
+    });
+
+    if (!user) {
+      return { status: 401, message: 'Email or Password is incorrect' };
+    }
+
+    const isPasswordCorrect = await comparePasswordsFn(
+      data.password,
+      user.password
+    );
+
+    if (!isPasswordCorrect) {
+      return { status: 401, message: 'Email or Password is incorrect' };
+    }
+
+    const token = generateToken(user.id, user.name);
+
+    (await cookies()).set('sessionToken', token, {
+      httpOnly: true, // Prevent client-side access
+      secure: process.env.NODE_ENV === 'production', // Only send in HTTPS
+      sameSite: 'strict', // Prevent CSRF
+      maxAge: 3600, // 1 hour
+    });
+
+    return { status: 200, message: 'Welcome Back!!' };
+  } catch (error: any) {
+    console.error('Error login:', error);
+    return {
+      status: 500,
+      message: 'An unknown error occurred. Please try again.',
+    };
+  }
+};
+
+type UpdateUserData = {
+  name?: string;
+  email?: string;
+  password?: string;
+};
+
+type UpdateUserDataResponse = {
+  status: number;
+  message: string;
+};
+
+//Todo: Hashing the admins password
+function hashMyPassword(password: string) {
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(password, salt);
+
+  return hash;
+}
+
+export const UpdateUser = async (
+  id: number,
+  data: UpdateUserData
+): Promise<UpdateUserDataResponse> => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!user) {
+      throw new Error('Invalid User, user not found');
+    }
+
+    await prisma.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        name: data.name ? data.name : user.name,
+        email: data.email ? data.email : user.email,
+        password: data.password ? hashMyPassword(data.password) : user.password,
+      },
+    });
+
+    return { status: 200, message: 'Updated Successfully' };
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    throw new Error('Failed to fetch users');
+  }
+};
