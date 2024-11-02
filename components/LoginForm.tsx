@@ -63,7 +63,6 @@ function LoginForm() {
           variant: 'destructive',
         });
       } catch (error) {
-        console.log(error);
         toast({
           title: 'OOPs!! Something went wrong',
           description: 'Check your internet please and try again',
@@ -83,7 +82,7 @@ function LoginForm() {
 
           <div>
             <h2 className="mb-1 text-2xl font-semibold text-center">
-              Sign in to NexLogik
+              Sign in to Adeegzone
             </h2>
             <p className="text-center text-gray-500 text-sm">
               Welcome back! Please sign in to continue

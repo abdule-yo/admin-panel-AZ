@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
+import { ProductCategories, Products } from './productsSeed';
 
 const prisma = new PrismaClient();
 
@@ -12,13 +13,16 @@ function hashMyPassword(password: string) {
 }
 
 async function main() {
-  //   await prisma.user.create({
-  //     data: {
-  //       name: 'Husna',
-  //       email: 'husnabaroo@gmail.com',
-  //       password: hashMyPassword('husna1212#'),
-  //     },
-  //   });
+  await prisma.productCategory.deleteMany();
+  await prisma.product.deleteMany();
+
+  await prisma.productCategory.createMany({
+    data: ProductCategories,
+  });
+
+  await prisma.product.createMany({
+    data: Products,
+  });
 }
 
 main()

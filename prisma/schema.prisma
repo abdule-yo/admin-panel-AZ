@@ -13,11 +13,34 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id      Int      @id @default(autoincrement()) 
-  email   String   @unique
-  name    String
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  name     String
   password String
+  avatar   String?
+}
 
+enum Status {
+  active
+  draft
+}
+
+model Product {
+  product_id          Int             @id @default(autoincrement())
+  product_image       String?
+  product_name        String
+  product_description String          @default("Product...")
+  product_price       Int             @default(0)
+  product_status      Status          @default(draft)
+  createdAt           DateTime        @default(now())
+  categoryId          Int
+  category            ProductCategory @relation(fields: [categoryId], references: [product_category_id])
+}
+
+model ProductCategory {
+  product_category_id Int       @id @default(autoincrement())
+  category            String
+  createdAt           DateTime  @default(now())
+  products            Product[]
 }

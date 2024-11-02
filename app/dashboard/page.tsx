@@ -7,5 +7,6 @@ export default async function Page() {
   if (!sessionToken?.value) {
     redirect('/');
   }
+
   return <div>Dashboard</div>;
 }

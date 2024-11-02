@@ -1,11 +1,12 @@
 'use client';
 
 import {
+  CookingPot,
   GalleryVerticalEnd,
   Grid,
   Settings2,
   ShoppingCart,
-  User,
+  User as UserIcon,
 } from 'lucide-react';
 import * as React from 'react';
 
@@ -21,14 +22,11 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar';
 
+import { GetUser } from '@/lib/db/UserCrud';
+import { User } from '@prisma/client';
 import { NavUser } from './nav-user';
 
 const data = {
-  user: {
-    name: 'Husna',
-    email: 'husna@gmail.com',
-    avatar: '/avatars/shadcn.jpg',
-  },
   teams: [
     {
       name: 'Amdin-panel-AZ',
@@ -49,18 +47,18 @@ const data = {
       items: [
         {
           title: 'Product List',
-          url: '/products/list',
+          url: '/dashboard/products/list',
         },
         {
           title: 'Categories',
-          url: '/products/categories',
+          url: '/dashboard/products/categories',
         },
       ],
     },
     {
       title: 'Customers',
-      url: '/customers',
-      icon: User,
+      url: '/dashboard/customers',
+      icon: UserIcon,
     },
     {
       title: 'Settings',
@@ -89,6 +87,22 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const [userData, setUserData] = React.useState<User | null>(null);
+  const [isPending, startTransition] = React.useTransition();
+
+  React.useEffect(() => {
+    startTransition(async () => {
+      try {
+        const data = await GetUser();
+
+        setUserData(data);
+      } catch (error) {
+        console.log(error);
+        throw new Error('Something went wrong');
+      }
+    });
+  }, []);
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -97,9 +111,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain items={data.navMain} />
       </SidebarContent>
-      <SidebarFooter>
-        <NavUser user={data.user} />
-      </SidebarFooter>
+      {userData && (
+        <SidebarFooter>
+          <NavUser user={userData} />
+        </SidebarFooter>
+      )}
       <SidebarRail />
     </Sidebar>
   );
