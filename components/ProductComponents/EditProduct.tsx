@@ -19,15 +19,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { GetCategories } from '@/lib/db/CategoryCrud';
-import {
-  CreateProduct,
-  ProductById,
-  ProductUpdate,
-} from '@/lib/db/ProductCrud';
+import { ProductById, ProductUpdate } from '@/lib/db/ProductCrud';
 import { UploadButton } from '@/utils/uploadting';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Product, ProductCategory } from '@prisma/client';
-import { DotIcon, Pencil } from 'lucide-react';
+import { Loader2Icon, Pencil } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
@@ -256,10 +252,14 @@ export default function EditProduct({ productId }: { productId: number }) {
             onClick={handleSubmit(onSubmit)}
             className="flex items-center gap-2 p-3"
           >
-            {isPending && (
-              <DotIcon className="animate-spin transition-all w-16" />
+            {isPending ? (
+              <>
+                <Loader2Icon className="animate-spin transition-all w-16" />
+                <span>Update</span>
+              </>
+            ) : (
+              <span>Update</span>
             )}
-            <span>Update</span>
           </Button>
         </DialogFooter>
       </DialogContent>

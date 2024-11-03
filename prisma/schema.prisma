@@ -39,8 +39,19 @@ model Product {
 }
 
 model ProductCategory {
-  product_category_id Int       @id @default(autoincrement())
-  category            String
-  createdAt           DateTime  @default(now())
-  products            Product[]
+  product_category_id  Int       @id @default(autoincrement())
+  category             String
+  category_description String    @default("Category...")
+  createdAt            DateTime  @default(now())
+  products             Product[]
+}
+
+model Customer {
+  customer_id  Int      @id @default(autoincrement())
+  first_name   String
+  last_name    String
+  email        String   @unique
+  phone_number String
+  message      String
+  createdAt    DateTime @default(now())
 }

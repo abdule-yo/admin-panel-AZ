@@ -1,10 +1,12 @@
 'use client';
 
 import {
+  ContactIcon,
   CookingPot,
   GalleryVerticalEnd,
   Grid,
   Settings2,
+  ShoppingBag,
   ShoppingCart,
   User as UserIcon,
 } from 'lucide-react';
@@ -51,14 +53,24 @@ const data = {
         },
         {
           title: 'Categories',
-          url: '/dashboard/products/categories',
+          url: '/dashboard/categories/list',
         },
       ],
     },
     {
+      title: 'Orders',
+      url: '/dashboard/orders',
+      icon: ShoppingBag,
+    },
+    {
+      title: 'Users',
+      url: '/dashboard/users',
+      icon: UserIcon,
+    },
+    {
       title: 'Customers',
       url: '/dashboard/customers',
-      icon: UserIcon,
+      icon: ContactIcon,
     },
     {
       title: 'Settings',

@@ -23,8 +23,7 @@ import { CreateProduct } from '@/lib/db/ProductCrud';
 import { UploadButton } from '@/utils/uploadting';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ProductCategory } from '@prisma/client';
-import { DotIcon } from 'lucide-react';
-import Image from 'next/image';
+import { Loader2Icon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -232,7 +231,7 @@ export default function AddProduct() {
           <Button type="submit" onClick={handleSubmit(onSubmit)}>
             {isPending ? (
               <>
-                <DotIcon className="animate-spin transition-all" />
+                <Loader2Icon className="animate-spin transition-all" />
                 <span>Add</span>
               </>
             ) : (
