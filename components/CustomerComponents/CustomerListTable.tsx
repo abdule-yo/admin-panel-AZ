@@ -2,6 +2,7 @@
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -49,6 +50,7 @@ export default function CustomerListTable({
       </Card>
       <Card className="overflow-x-auto m-4 p-3">
         <Table className="min-w-full md:min-w-[600px]">
+          <TableCaption>{customers.length} customers so far</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead className="text-xs md:text-sm">Name</TableHead>

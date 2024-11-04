@@ -55,7 +55,11 @@ function LoginForm() {
             variant: 'default',
           });
 
-          router.push('/dashboard');
+          if (res.isAdmin) {
+            router.push('/dashboard');
+          } else {
+            router.push(`/`);
+          }
         }
         toast({
           title: 'Error',

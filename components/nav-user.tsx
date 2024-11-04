@@ -69,7 +69,7 @@ export function NavUser({ user }: NavUserTypeProps) {
         });
 
         await delay(3000);
-        router.push('/');
+        router.push('/login');
       } catch (error) {
         toast({
           title: 'OOPs!! Something went wrong',

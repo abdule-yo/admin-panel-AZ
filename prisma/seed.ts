@@ -14,8 +14,26 @@ function hashMyPassword(password: string) {
 }
 
 async function main() {
-  // await prisma.productCategory.deleteMany();
+  // await prisma.user.createMany({
+  //   data: [
+  //     {
+  //       email: 'husnabaroo@gmail.com',
+  //       name: 'Husna Y.',
+  //       isAdmin: true,
+  //       password: hashMyPassword('husna1212#'),
+  //       avatar: '',
+  //     },
+  //     {
+  //       email: 'abdulebaroo@gmail.com',
+  //       name: 'Abdule Y.',
+  //       isAdmin: false,
+  //       password: hashMyPassword('abdule1212#'),
+  //       avatar: '',
+  //     },
+  //   ],
+  // });
   // await prisma.product.deleteMany();
+  // await prisma.productCategory.deleteMany();
   // await prisma.productCategory.createMany({
   //   data: ProductCategories,
   // });

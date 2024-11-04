@@ -2,13 +2,12 @@
 
 import {
   ContactIcon,
-  CookingPot,
   GalleryVerticalEnd,
   Grid,
   Settings2,
   ShoppingBag,
   ShoppingCart,
-  User as UserIcon,
+  UsersIcon,
 } from 'lucide-react';
 import * as React from 'react';
 
@@ -65,7 +64,7 @@ const data = {
     {
       title: 'Users',
       url: '/dashboard/users',
-      icon: UserIcon,
+      icon: UsersIcon,
     },
     {
       title: 'Customers',

@@ -11,9 +11,10 @@ import { ProductCategory } from '@prisma/client';
 import { useState } from 'react';
 import { Card } from '../ui/card';
 import { Input } from '../ui/input';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 import AddCategory from './AddCategory';
-import EditCategory from './EditCategory';
 import { DeleteCategoryAlert } from './DeleteCategory';
+import EditCategory from './EditCategory';
 
 type CategoriesListTableProps = {
   categories: ProductCategory[];
@@ -70,7 +71,16 @@ function CategoriesListTable({ categories }: CategoriesListTableProps) {
                       <p>{category.category}</p>
                     </div>
                   </TableCell>
-                  <TableCell>{category.category_description}</TableCell>
+                  <TableCell className="truncate max-w-3.5 overflow-hidden whitespace-wrap">
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <span>{category.category_description}</span>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        {category.category_description}
+                      </TooltipContent>
+                    </Tooltip>
+                  </TableCell>
                   <TableCell>{category.createdAt.toDateString()}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-4">

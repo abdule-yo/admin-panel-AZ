@@ -48,7 +48,10 @@ export function DeleteProductAlert({ productId }: { productId: number }) {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Trash2 className="text-red-500 hover:text-red-600 cursor-pointer" />
+        <Trash2
+          size={18}
+          className="text-red-500 hover:text-red-600 cursor-pointer"
+        />
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

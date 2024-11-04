@@ -1,13 +1,17 @@
 import BarChartComp from '@/components/DashboardComponents/BarChart';
 import LineChartComp from '@/components/DashboardComponents/LineChart';
 import PieChartComp from '@/components/DashboardComponents/PieChart';
-import { cookies } from 'next/headers';
+import { GetUser } from '@/lib/db/UserCrud';
+import { User } from '@prisma/client';
 import { redirect } from 'next/navigation';
 
 export default async function Page() {
-  const sessionToken = (await cookies()).get('sessionToken');
-
-  if (!sessionToken?.value) {
+  try {
+    const userInfo: User = await GetUser();
+    if (!userInfo.isAdmin) {
+      redirect('/');
+    }
+  } catch (error) {
     redirect('/');
   }
 

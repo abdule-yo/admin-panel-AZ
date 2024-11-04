@@ -17,6 +17,7 @@ export async function GetUser(): Promise<User | null | any> {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET!) as {
       userId: number;
       name: string;
+      isAdmin: boolean;
       iat: number;
       exp: number;
     };
@@ -27,6 +28,7 @@ export async function GetUser(): Promise<User | null | any> {
         id: true,
         name: true,
         email: true,
+        isAdmin: true,
         avatar: true,
       },
     });
@@ -40,9 +42,25 @@ export async function GetUser(): Promise<User | null | any> {
   }
 }
 
+export async function GetUsers(): Promise<User[]> {
+  try {
+    const users = await prisma.user.findMany({
+      orderBy: {
+        name: 'asc',
+      },
+    });
+    return users;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Something went wrong');
+  }
+}
+
 type LoginResponse = {
   status: number;
   message: string;
+  isAdmin: boolean;
+  name: string;
 };
 
 type LoginData = {
@@ -58,8 +76,8 @@ async function comparePasswordsFn(loginPassword: string, userPassword: string) {
 }
 
 //Todo: GeneratingToken
-function generateToken(userId: number, name: string) {
-  return jwt.sign({ userId, name }, process.env.JWT_SECRET!, {
+function generateToken(userId: number, name: string, isAdmin: boolean) {
+  return jwt.sign({ userId, name, isAdmin }, process.env.JWT_SECRET!, {
     expiresIn: '24h',
   });
 }
@@ -73,7 +91,7 @@ export const Login = async (data: LoginData): Promise<LoginResponse> => {
     });
 
     if (!user) {
-      return { status: 401, message: 'Email or Password is incorrect' };
+      throw new Error('Email or Password is incorrect');
     }
 
     const isPasswordCorrect = await comparePasswordsFn(
@@ -82,10 +100,10 @@ export const Login = async (data: LoginData): Promise<LoginResponse> => {
     );
 
     if (!isPasswordCorrect) {
-      return { status: 401, message: 'Email or Password is incorrect' };
+      throw new Error('Email or Password is incorrect');
     }
 
-    const token = generateToken(user.id, user.name);
+    const token = generateToken(user.id, user.name, user.isAdmin);
 
     (await cookies()).set('sessionToken', token, {
       httpOnly: true, // Prevent client-side access
@@ -94,12 +112,14 @@ export const Login = async (data: LoginData): Promise<LoginResponse> => {
       maxAge: 3600 * 24, // 24 hours
     });
 
-    return { status: 200, message: 'Welcome Back!!' };
-  } catch (error: any) {
     return {
-      status: 500,
-      message: 'An unknown error occurred. Please try again.',
+      status: 200,
+      message: 'Welcome Back!!',
+      isAdmin: user.isAdmin,
+      name: user.name,
     };
+  } catch (error: any) {
+    throw new Error('An unknown error occurred. Please try again.');
   }
 };
 
@@ -108,7 +128,7 @@ type LogoutResponse = {
   message: string;
 };
 
-export const Logout = async (email: string): Promise<LoginResponse> => {
+export const Logout = async (email: string): Promise<LogoutResponse> => {
   try {
     const user = await prisma.user.findUnique({
       where: {
