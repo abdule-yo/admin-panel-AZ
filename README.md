@@ -1,36 +1,21 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Got it! Since it's only the backend for now, here's a revised GitHub description:  
 
-## Getting Started
+---
 
-First, run the development server:
+# Adeezone Admin Dashboard API 🛒  
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+This is the **backend** for the Adeezone eCommerce **admin dashboard**, providing a **solid startup codebase** for anyone looking to build an admin panel for an eCommerce platform. The project includes essential features like authentication, validation, and database setup—allowing developers to focus on expanding the functionality.  
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 🚀 Features:  
+- **Authentication & Authorization** – Secure setup with **Next.js 15 & NextAuth**  
+- **Validation with Zod** – Ensuring data integrity and security  
+- **Database Management with Prisma** – Simplified and efficient database interactions  
+- **Image Handling with UploadThing** – Streamlined product image uploads  
+- **TypeScript Support** – Strongly typed backend for reliability  
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 🎯 Why Use This?  
+This backend is **ready to go** for developers who want a **well-structured starting point** for an eCommerce admin dashboard. It includes core functionalities like **authentication, validation, and database setup**, so you can focus on extending the project.  
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+🔗 Feel free to **fork, modify, and continue building the frontend** on top of it! 🚀  
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
